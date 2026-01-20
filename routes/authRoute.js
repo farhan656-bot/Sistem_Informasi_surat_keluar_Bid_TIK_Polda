@@ -4,10 +4,12 @@ const authController = require('../controllers/AuthControllers');
 
 
 router.get('/login', (req, res) => {
-    res.render('login');
+    res.render('login', { error: null });;
 });
 
 
 router.post('/login', authController.login);
+
+router.get('/logout', authController.logout);
 
 module.exports = router;

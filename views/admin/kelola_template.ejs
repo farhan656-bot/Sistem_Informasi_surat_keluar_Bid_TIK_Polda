@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Template - SIPRESISI TIK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-[#EAEABA] flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-[#1a1a1a] text-white flex flex-col p-6">
+        <img src="/image/logo_tik.png" class="w-32 mx-auto mb-10" alt="Logo">
+        <nav class="space-y-2 flex-1 overflow-y-auto">
+            <a href="/admin/dashboard" class="flex items-center p-3 hover:bg-gray-800 rounded-xl transition">
+                <i class="fas fa-th-large mr-3"></i> Dashboard
+            </a>
+            <a href="/admin/users" class="flex items-center p-3 hover:bg-gray-800 rounded-xl transition">
+                <i class="fas fa-users mr-3"></i> Kelola user
+            </a>
+            <a href="/admin/types" class="flex items-center p-3 hover:bg-gray-800 rounded-xl transition">
+                <i class="fas fa-file-alt mr-3"></i> Kelola Jenis Surat
+            </a>
+            <a href="/admin/templates" class="flex items-center p-3 bg-white text-black rounded-xl font-bold">
+                <i class="fas fa-copy mr-3"></i> Kelola Template
+            </a>
+            <a href="/admin/numbers" class="flex items-center p-3 hover:bg-gray-800 rounded-xl transition">
+                <i class="fas fa-hashtag mr-3"></i> Pengaturan Nomor
+            </a>
+            <a href="/admin/logs" class="flex items-center p-3 hover:bg-gray-800 rounded-xl transition">
+                <i class="fas fa-wave-square mr-3"></i> Log Aktivitas
+            </a>
+            <a href="/admin/archive" class="flex items-center p-3 hover:bg-gray-800 rounded-xl transition">
+                <i class="fas fa-archive mr-3"></i> Arsip Surat
+            </a>
+        </nav>
+        <div class="mt-auto pt-4 border-t border-gray-800">
+            <a href="/auth/logout" class="flex items-center p-3 text-red-400 hover:bg-red-500 hover:text-white rounded-xl font-bold">
+                <i class="fas fa-sign-out-alt mr-3"></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-8 overflow-y-auto">
+        <header class="sticky top-0 z-30 bg-[#EAEABA] px-8 py-4 -mx-8 border-b border-black/10 shadow-[0_2px_0_rgba(0,0,0,0.12)]">
+            <div class="flex justify-end">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold text-base shadow-sm">
+                        P
+                    </div>
+                    <div class="flex flex-col justify-center leading-none">
+                        <span class="font-bold text-sm text-gray-800 leading-normal">
+                            <%= user %>
+                        </span>
+                        <span class="text-xs text-gray-500 leading-normal">
+                            Admin
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex justify-between items-end mb-8 mt-6">
+            <div>
+                <h3 class="text-2xl font-bold text-gray-800">Kelola Template Surat</h3>
+                <p class="text-sm text-gray-500">Unggah dan kelola master template Word (.docx)</p>
+            </div>
+            <a href="/admin/templates/new" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition flex items-center shadow-lg shadow-blue-200">
+                <i class="fas fa-plus mr-2 text-[10px]"></i> Unggah Template
+            </a>
+        </div>
+
+        <div class="bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-100">
+            
+            <div class="relative mb-8">
+                <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input type="text" id="searchInput" placeholder="Cari berdasarkan nama dan jenis" 
+                       class="w-full pl-12 pr-6 py-4 bg-gray-50 rounded-2xl text-sm border-none outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="text-gray-400 text-[10px] uppercase font-bold tracking-[0.15em]">
+                            <th class="pb-6 border-b border-gray-50">Nama Template</th>
+                            <th class="pb-6 border-b border-gray-50">Jenis Surat</th>
+                            <th class="pb-6 border-b border-gray-50">Format</th>
+                            <th class="pb-6 border-b border-gray-50">Ukuran</th>
+                            <th class="pb-6 border-b border-gray-50">Digunakan</th>
+                            <th class="pb-6 border-b border-gray-50">Tanggal Upload</th>
+                        </tr>
+                    </thead>
+                    <tbody id="templateBody">
+                        <% if (templates && templates.length > 0) { %>
+                            <% templates.forEach(temp => { %>
+                            <tr class="group border-b border-gray-50 hover:bg-gray-50 transition">
+                                <td class="py-5">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
+                                            <i class="fas fa-upload text-sm"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-sm text-gray-800"><%= temp.template_name || 'Belum ada template' %></div>
+                                            <div class="text-[10px] text-gray-400 font-medium">Oleh Admin</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-5">
+                                    <span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-[10px] font-bold">
+                                        <%= temp.jenis_surat %>
+                                    </span>
+                                </td>
+                                <td class="py-5 text-sm text-gray-600 font-semibold italic uppercase">Docx</td>
+                                <td class="py-5 text-sm text-gray-600"><%= temp.file_size || '0 KB' %></td>
+                                <td class="py-5 text-sm text-gray-800 font-bold"><%= temp.digunakan || 0 %>X</td>
+                                <td class="py-5 text-sm text-gray-500 font-medium">
+                                    <%= temp.upload_date ? new Date(temp.upload_date).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'}).toUpperCase() : '-' %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="6" class="py-20 text-center opacity-30 italic text-sm text-gray-400">
+                                    Data template tidak ditemukan.
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Fitur Pencarian Real-time
+        const searchInput = document.getElementById('searchInput');
+        const rows = document.getElementById('templateBody').getElementsByTagName('tr');
+
+        searchInput.addEventListener('keyup', function() {
+            const query = this.value.toLowerCase();
+            for (let row of rows) {
+                row.style.display = row.textContent.toLowerCase().includes(query) ? '' : 'none';
+            }
+        });
+    </script>
+</body>
+</html>

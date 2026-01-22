@@ -1,0 +1,10 @@
+<form action="/admin/upload-template" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-2xl shadow-sm">
+    <input type="hidden" name="letter_type_id" value="<%= type.id %>">
+    
+    <label class="block mb-2 font-bold text-gray-700">Pilih File Word (.docx)</label>
+    <input type="file" name="template_word" accept=".docx" class="w-full p-2 border rounded-xl mb-4" required>
+    
+    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-blue-700 transition">
+        Unggah Template
+    </button>
+</form>

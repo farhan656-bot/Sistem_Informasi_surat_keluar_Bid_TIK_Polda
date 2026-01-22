@@ -1,0 +1,76 @@
+<aside class="w-64 bg-[#1a1a1a] text-white flex flex-col p-6 h-screen sticky top-0">
+    
+    <div class="mb-10 flex items-center space-x-3 px-2">
+        <img src="/image/logo_tik.png" alt="Logo TIK" class="w-12 h-12 object-contain shadow-lg">
+        <div>
+            <h2 class="font-bold text-lg leading-tight tracking-tight uppercase">TIK POLRI</h2>
+            <p class="text-[10px] text-gray-500 font-medium uppercase tracking-tighter">Bid Tik Polda</p>
+        </div>
+    </div>
+
+    <nav class="flex-1 space-y-2 overflow-y-auto pr-2 custom-scrollbar">
+        
+        <a href="/admin/dashboard" 
+           class="flex items-center space-x-4 p-4 rounded-2xl transition-all duration-300 
+           <%= currentPage === 'dashboard' ? 'bg-white text-gray-900 shadow-lg' : 'text-gray-400 hover:bg-white/5 hover:text-white' %>">
+            <i class="fas fa-th-large w-5"></i>
+            <span class="font-bold text-sm">Dashboard</span>
+        </a>
+
+        <a href="/admin/users" 
+           class="flex items-center space-x-4 p-4 rounded-2xl transition-all duration-300 
+           <%= currentPage === 'users' ? 'bg-white text-gray-900 shadow-lg' : 'text-gray-400 hover:bg-white/5 hover:text-white' %>">
+            <i class="fas fa-users w-5"></i>
+            <span class="font-bold text-sm">Kelola user</span>
+        </a>
+
+        <a href="/admin/types" 
+           class="flex items-center space-x-4 p-4 rounded-2xl transition-all duration-300 
+           <%= currentPage === 'types' ? 'bg-white text-gray-900 shadow-lg' : 'text-gray-400 hover:bg-white/5 hover:text-white' %>">
+            <i class="fas fa-file-invoice w-5"></i>
+            <span class="font-bold text-sm">Kelola Jenis Surat</span>
+        </a>
+
+        <a href="/admin/templates" 
+           class="flex items-center space-x-4 p-4 rounded-2xl transition-all duration-300 
+           <%= currentPage === 'templates' ? 'bg-white text-gray-900 shadow-lg font-bold' : 'text-gray-400 hover:bg-white/5 hover:text-white' %>">
+            <i class="fas fa-file-alt w-5"></i>
+            <span class="font-bold text-sm">Kelola Template</span>
+        </a>
+
+        <a href="/admin/numbers" 
+           class="flex items-center space-x-4 p-4 rounded-2xl transition-all duration-300 
+           <%= currentPage === 'numbers' ? 'bg-white text-gray-900 shadow-lg' : 'text-gray-400 hover:bg-white/5 hover:text-white' %>">
+            <i class="fas fa-hashtag w-5"></i>
+            <span class="font-bold text-sm">Pengaturan Nomor</span>
+        </a>
+
+        <a href="/admin/logs" 
+           class="flex items-center space-x-4 p-4 rounded-2xl transition-all duration-300 
+           <%= currentPage === 'logs' ? 'bg-white text-gray-900 shadow-lg' : 'text-gray-400 hover:bg-white/5 hover:text-white' %>">
+            <i class="fas fa-history w-5"></i>
+            <span class="font-bold text-sm">Log Aktivitas</span>
+        </a>
+
+        <a href="/admin/archive" 
+           class="flex items-center space-x-4 p-4 rounded-2xl transition-all duration-300 
+           <%= currentPage === 'archive' ? 'bg-white text-gray-900 shadow-lg' : 'text-gray-400 hover:bg-white/5 hover:text-white' %>">
+            <i class="fas fa-archive w-5"></i>
+            <span class="font-bold text-sm">Arsip Surat</span>
+        </a>
+    </nav>
+
+    <div class="pt-6 border-t border-white/10 mt-4">
+        <a href="/auth/logout" class="flex items-center space-x-4 p-4 rounded-2xl text-red-400 hover:bg-red-500/10 transition-all duration-300 group">
+            <i class="fas fa-sign-out-alt w-5 transition-transform group-hover:translate-x-1"></i>
+            <span class="font-bold text-sm">Logout</span>
+        </a>
+    </div>
+</aside>
+
+<style>
+    /* Styling scrollbar tipis agar tetap rapi */
+    .custom-scrollbar::-webkit-scrollbar { width: 3px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.05); border-radius: 10px; }
+</style>

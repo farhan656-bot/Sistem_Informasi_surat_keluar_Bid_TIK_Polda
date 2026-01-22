@@ -1,0 +1,16 @@
+<div class="grid grid-cols-3 gap-6">
+    <% types.forEach(type => { %>
+    <div class="bg-white p-6 rounded-2xl shadow-sm border hover:border-blue-500 transition">
+        <h4 class="font-bold text-gray-800"><%= type.name %></h4>
+        <p class="text-xs text-gray-500 mb-4"><%= type.description %></p>
+        
+        <a href="/staff/download-template/<%= type.id %>" class="text-blue-600 text-xs font-bold hover:underline">
+            <i class="fas fa-download mr-1"></i> Download Template Word
+        </a>
+        
+        <button onclick="goToStep3('<%= type.id %>')" class="w-full mt-4 bg-blue-600 text-white py-2 rounded-xl text-xs font-bold">
+            Pilih & Lanjutkan
+        </button>
+    </div>
+    <% }) %>
+</div>

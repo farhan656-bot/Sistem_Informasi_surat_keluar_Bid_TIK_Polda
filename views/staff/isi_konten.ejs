@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isi Konten Surat - SIPRESISI TIK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        
+        .btn-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    </style>
+</head>
+<body class="bg-[#EAEABA] flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-[#1a1a1a] text-white flex flex-col p-6">
+        <img src="/image/logo_tik.png" class="w-32 mx-auto mb-10" alt="Logo">
+        <nav class="space-y-4 flex-1">
+            <a href="/staff/dashboard" class="flex items-center p-3 hover:bg-gray-800 rounded-xl transition font-bold text-sm">
+                <i class="fas fa-th-large mr-3"></i> Dashboard
+            </a>
+            <a href="/staff/buat-surat" class="flex items-center p-3 bg-white text-black rounded-xl font-bold shadow-lg text-sm">
+                <i class="fas fa-file-signature mr-3"></i> Buat surat baru
+            </a>
+            <a href="/staff/daftar-surat" class="flex items-center p-3 hover:bg-gray-800 rounded-xl transition font-bold text-sm">
+                <i class="fas fa-list mr-3"></i> Daftar surat saya
+            </a>
+            <a href="/staff/pencarian" class="flex items-center p-3 hover:bg-gray-800 rounded-xl transition font-bold text-sm">
+                <i class="fas fa-search mr-3"></i> Pencarian surat
+            </a>
+        </nav>
+        <div class="mt-auto pt-6 border-t border-gray-800">
+            <a href="/auth/logout" class="flex items-center p-3 text-red-400 hover:bg-red-500 hover:text-white rounded-xl transition font-bold text-sm">
+                <i class="fas fa-sign-out-alt mr-3"></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-8 overflow-y-auto">
+        
+        <header class="sticky top-0 z-30 bg-[#EAEABA] px-8 py-5 -mx-8 border-b border-black/10 shadow-[0_2px_0_rgba(0,0,0,0.12)]">
+            <div class="flex items-center">
+                <div class="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4 shadow-md">
+                    <%= user ? user.charAt(0).toUpperCase() : 'S' %>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <span class="font-bold text-base text-gray-800 leading-tight"><%= user %></span>
+                    <span class="text-sm text-gray-500 leading-tight font-medium">Staff</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="mt-10 mb-8">
+            <h3 class="text-2xl font-bold text-gray-800">Buat Surat Baru</h3>
+            <p class="text-gray-500 text-sm mt-1">Pilih Jenis Surat dan Template</p>
+        </div>
+
+        <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-50 flex items-center justify-between mb-10">
+            <div class="flex items-center gap-4 flex-1 opacity-40">
+                <div class="w-12 h-12 bg-gray-100 text-gray-400 rounded-2xl flex items-center justify-center font-bold">1</div>
+                <div><p class="text-sm font-bold text-gray-800">Pilih Jenis Surat</p></div>
+            </div>
+            <i class="fas fa-chevron-right text-gray-200 mx-6"></i>
+            <div class="flex items-center gap-4 flex-1 opacity-40">
+                <div class="w-12 h-12 bg-gray-100 text-gray-400 rounded-2xl flex items-center justify-center font-bold">2</div>
+                <div><p class="text-sm font-bold text-gray-800">Pilih Template</p></div>
+            </div>
+            <i class="fas fa-chevron-right text-gray-200 mx-6"></i>
+            <div class="flex items-center gap-4 flex-1">
+                <div class="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center font-bold shadow-lg shadow-blue-100">3</div>
+                <div>
+                    <p class="text-sm font-bold text-gray-800">Isi Konten</p>
+                    <p class="text-[11px] text-gray-400">Lengkapi isi surat</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-[2.5rem] p-10 shadow-sm border border-gray-100 mb-10">
+            <div class="flex justify-between items-center mb-10 border-b border-gray-50 pb-6">
+                <h4 class="text-xl font-bold text-gray-800">Isi konten surat</h4>
+                <a href="/staff/buat-surat/template/<%= typeId %>" class="text-blue-600 font-bold text-xs hover:underline uppercase tracking-wider">
+                    <i class="fas fa-undo mr-1"></i> ubah template
+                </a>
+            </div>
+
+            <form id="letterForm" action="/staff/store-letter" method="POST" enctype="multipart/form-data" class="space-y-8">
+                <input type="hidden" name="letter_type_id" value="<%= typeId %>">
+                
+                <div class="space-y-2">
+                    <label class="block text-sm font-bold text-gray-700">Penerima surat<span class="text-red-500 ml-1">*</span></label>
+                    <input type="text" name="recipient" placeholder="Contoh: Kapolda Sumatera Utara"
+                           class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all" required>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-bold text-gray-700">Perihal/subjek<span class="text-red-500 ml-1">*</span></label>
+                    <input type="text" name="subject" placeholder="Contoh: Laporan Mingguan TIK"
+                           class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all" required>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-bold text-gray-700">Isi surat<span class="text-red-500 ml-1">*</span></label>
+                    <textarea name="content" rows="10" placeholder="Ketikkan isi surat di sini..."
+                              class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all" required></textarea>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-bold text-gray-700">Lampiran (opsional)</label>
+                    <div id="dropzone" class="border-2 border-dashed border-gray-100 rounded-[2rem] p-10 flex flex-col items-center justify-center bg-gray-50 group hover:bg-gray-100 transition-all cursor-pointer">
+                        <i class="fas fa-file-upload text-3xl text-gray-200 group-hover:text-blue-500 mb-3 transition-colors"></i>
+                        <p class="text-xs font-bold text-blue-600">Klik untuk upload file</p>
+                        <p class="text-[10px] text-gray-400 mt-1 uppercase font-medium">PDF, DOC, DOCX, JPG, PNG (MAKS. 5MB)</p>
+                        <input type="file" name="attachment" id="attachmentInput" class="hidden" accept=".pdf,.doc,.docx,.jpg,.png">
+                        <p id="fileNameDisplay" class="mt-4 text-xs font-bold text-blue-700 bg-blue-50 px-4 py-2 rounded-full hidden"></p>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50/50 p-6 rounded-3xl flex items-start gap-4 border border-blue-100">
+                    <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-info text-xs"></i>
+                    </div>
+                    <div class="text-[11px] text-blue-800 leading-relaxed font-medium">
+                        <p class="font-bold mb-1 text-xs uppercase tracking-tight">Catatan:</p>
+                        <ul class="list-disc ml-4 space-y-1">
+                            <li>Surat akan diajukan ke pimpinan untuk approval</li>
+                            <li>Anda dapat menyimpan sebagai draft untuk dilanjutkan nanti</li>
+                            <li>Pastikan semua informasi sudah benar sebelum submit</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flex gap-6 pt-4">
+                    <button type="submit" name="action" value="draft" 
+                            class="flex-1 py-4 border border-gray-200 rounded-2xl font-bold text-gray-500 hover:bg-gray-50 btn-transition flex items-center justify-center gap-3">
+                        <i class="far fa-save text-lg"></i> Simpan Draft
+                    </button>
+                    <button type="submit" name="action" value="approval" 
+                            class="flex-1 py-4 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-100 btn-transition flex items-center justify-center gap-3">
+                        <i class="fas fa-paper-plane"></i> Ajukan untuk Approval
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // Logika Dropzone Lampiran
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('attachmentInput');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+
+        dropzone.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                const fileSize = (file.size / (1024 * 1024)).toFixed(2);
+                
+                
+                if (fileSize > 5) {
+                    alert("Ukuran file terlalu besar! Maksimal 5MB.");
+                    this.value = "";
+                    fileNameDisplay.classList.add('hidden');
+                } else {
+                    fileNameDisplay.textContent = `✓ ${file.name} (${fileSize} MB)`;
+                    fileNameDisplay.classList.remove('hidden');
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unggah Template Baru - SIPRESISI TIK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-[#EAEABA] flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-[#1a1a1a] text-white flex flex-col p-6">
+        <img src="/image/logo_tik.png" class="w-32 mx-auto mb-10" alt="Logo">
+        <nav class="space-y-2 flex-1 overflow-y-auto">
+            <a href="/admin/dashboard" class="flex items-center p-3 hover:bg-gray-800 rounded-xl transition">
+                <i class="fas fa-th-large mr-3"></i> Dashboard
+            </a>
+            <a href="/admin/users" class="flex items-center p-3 hover:bg-gray-800 rounded-xl transition">
+                <i class="fas fa-users mr-3"></i> Kelola user
+            </a>
+            <a href="/admin/types" class="flex items-center p-3 hover:bg-gray-800 rounded-xl transition">
+                <i class="fas fa-file-alt mr-3"></i> Kelola Jenis Surat
+            </a>
+            <a href="/admin/templates" class="flex items-center p-3 bg-white text-black rounded-xl font-bold">
+                <i class="fas fa-copy mr-3"></i> Kelola Template
+            </a>
+            <a href="/admin/numbers" class="flex items-center p-3 hover:bg-gray-800 rounded-xl transition">
+                <i class="fas fa-hashtag mr-3"></i> Pengaturan Nomor
+            </a>
+            <a href="/admin/logs" class="flex items-center p-3 hover:bg-gray-800 rounded-xl transition">
+                <i class="fas fa-wave-square mr-3"></i> Log Aktivitas
+            </a>
+            <a href="/admin/archive" class="flex items-center p-3 hover:bg-gray-800 rounded-xl transition">
+                <i class="fas fa-archive mr-3"></i> Arsip Surat
+            </a>
+        </nav>
+        <div class="mt-auto pt-4 border-t border-gray-800">
+            <a href="/auth/logout" class="flex items-center p-3 text-red-400 hover:bg-red-500 hover:text-white rounded-xl font-bold">
+                <i class="fas fa-sign-out-alt mr-3"></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-8 overflow-y-auto">
+        <header class="sticky top-0 z-30 bg-[#EAEABA] px-8 py-4 -mx-8 border-b border-black/10 shadow-[0_2px_0_rgba(0,0,0,0.12)] mb-10">
+            <div class="flex justify-end">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold text-base shadow-sm">
+                        P
+                    </div>
+                    <div class="flex flex-col justify-center leading-none">
+                        <span class="font-bold text-sm text-gray-800 leading-normal">
+                            <%= user %>
+                        </span>
+                        <span class="text-xs text-gray-500 leading-normal">
+                            Admin
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="max-w-2xl mx-auto bg-white rounded-[2.5rem] p-10 shadow-sm border border-gray-100">
+            <h3 class="text-2xl font-bold text-gray-800 mb-8">Unggah Template Baru</h3>
+
+            <form action="/admin/templates/upload" method="POST" enctype="multipart/form-data" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Nama Template</label>
+                    <input type="text" name="template_name" placeholder="Contoh: Template Surat Keputusan" 
+                           class="w-full px-5 py-3 bg-gray-50 border-none rounded-2xl text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all" required>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Jenis Surat</label>
+                    <div class="relative">
+                        <select name="letter_type_id" 
+                                class="w-full px-5 py-3 bg-gray-50 border-none rounded-2xl text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all appearance-none" required>
+                            <option value="" disabled selected>Pilih Jenis Surat</option>
+                            <% letterTypes.forEach(type => { %>
+                                <option value="<%= type.id %>"><%= type.name %></option>
+                            <% }) %>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">File Template</label>
+                    <div id="dropzone" class="border-2 border-dashed border-gray-100 rounded-[2rem] p-12 flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100/50 transition-all cursor-pointer group">
+                        <i class="fas fa-upload text-4xl text-gray-200 group-hover:text-blue-500 mb-4 transition-colors"></i>
+                        <p class="text-sm font-bold text-blue-600 mb-1">Klik untuk unggah <span class="text-gray-400 font-medium">atau drag & drop</span></p>
+                        <p class="text-[10px] text-gray-400 uppercase tracking-widest font-medium">Format: DOCX(Maks. 5MB)</p>
+                        <input type="file" name="template_file" id="fileInput" class="hidden" accept=".docx,.pdf">
+                        <p id="fileNameDisplay" class="mt-4 text-xs font-bold text-blue-700 bg-blue-50 px-4 py-2 rounded-full hidden"></p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 pt-4">
+                    <a href="/admin/templates" 
+                       class="flex-1 py-3.5 text-center bg-gray-50 border border-gray-100 rounded-2xl font-bold text-gray-500 hover:bg-gray-100 transition-all">
+                        Batal
+                    </a>
+                    <button type="submit" 
+                            class="flex-1 py-3.5 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all">
+                        Unggah
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // Logika Dropzone Interaktif
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('fileInput');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+
+        dropzone.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                fileNameDisplay.textContent = "✓ " + fileInput.files[0].name;
+                fileNameDisplay.classList.remove('hidden');
+            }
+        });
+
+        // Efek Drag & Drop Visual
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('bg-blue-50', 'border-blue-200');
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('bg-blue-50', 'border-blue-200');
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('bg-blue-50', 'border-blue-200');
+            fileInput.files = e.dataTransfer.files;
+            if (fileInput.files.length > 0) {
+                fileNameDisplay.textContent = "✓ " + fileInput.files[0].name;
+                fileNameDisplay.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
